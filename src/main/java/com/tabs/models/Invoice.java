@@ -9,6 +9,7 @@ public class Invoice {
     private String invoiceId;
     private String custId;
     private String subscriptionId;
+    private String phoneNumber;
     private LocalDate billingDate;
     private Double baseFare;
     private Double overageFare;
@@ -22,7 +23,7 @@ public class Invoice {
     public Invoice() {
     }
 
-    public Invoice(String invoiceId, String custId, String subscriptionId, LocalDate billingDate, Double baseFare, Double overageFare, Double roamingCharges, Double discount, Double subtotal, Double gst, Double grandTotal, PaymentStatus paymentStatus) {
+    public Invoice(String invoiceId, String custId, String subscriptionId, String phoneNumber,LocalDate billingDate, Double baseFare, Double overageFare, Double roamingCharges, Double discount, Double subtotal, Double gst, Double grandTotal, PaymentStatus paymentStatus) {
         this.invoiceId = invoiceId;
         this.custId = custId;
         this.subscriptionId = subscriptionId;
@@ -31,7 +32,7 @@ public class Invoice {
         this.overageFare = overageFare;
         this.roamingCharges = roamingCharges;
         this.discount = discount;
-        subTotal = subtotal;
+        this.subTotal = subtotal;
         this.gst = gst;
         this.grandTotal = grandTotal;
         this.paymentStatus = paymentStatus;
@@ -59,6 +60,14 @@ public class Invoice {
 
     public void setSubscriptionId(String subscriptionId) {
         this.subscriptionId = subscriptionId;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public LocalDate getBillingDate() {
@@ -133,11 +142,14 @@ public class Invoice {
         this.paymentStatus = paymentStatus;
     }
 
+
     @Override
     public String toString() {
         return "Invoice{" +
                 "invoiceId='" + invoiceId + '\'' +
+                ", custId='" + custId + '\'' +
                 ", subscriptionId='" + subscriptionId + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
                 ", billingDate=" + billingDate +
                 ", baseFare=" + baseFare +
                 ", overageFare=" + overageFare +

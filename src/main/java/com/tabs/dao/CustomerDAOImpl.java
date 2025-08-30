@@ -71,4 +71,27 @@ public class CustomerDAOImpl implements CustomerDAO {
         }
         return new ArrayList<>();
     }
+
+    // Credit ops
+    @Override
+    public boolean isCustomerCreditBlocked(String custId) {
+        Customer customer = customers.get(custId);
+        return customer != null && customer.isCreditBlocked();
+    }
+
+    @Override
+    public void blockCustomer(String customerId) {
+        Customer customer = customers.get(customerId);
+        if (customer != null) {
+            customer.setCreditBlocked(true);
+        }
+    }
+
+    @Override
+    public void unblockCustomer(String customerId) {
+        Customer customer = customers.get(customerId);
+        if (customer != null) {
+            customer.setCreditBlocked(false);
+        }
+    }
 }
