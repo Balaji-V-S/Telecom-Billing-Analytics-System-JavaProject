@@ -7,6 +7,7 @@ public class Invoice {
     public enum PaymentStatus {PENDING,PAID}
 
     private String invoiceId;
+    private String custId;
     private String subscriptionId;
     private LocalDate billingDate;
     private Double baseFare;
@@ -21,8 +22,9 @@ public class Invoice {
     public Invoice() {
     }
 
-    public Invoice(String invoiceId, String subscriptionId, LocalDate billingDate, Double baseFare, Double overageFare, Double roamingCharges, Double discount, Double subtotal, Double gst, Double grandTotal, PaymentStatus paymentStatus) {
+    public Invoice(String invoiceId, String custId, String subscriptionId, LocalDate billingDate, Double baseFare, Double overageFare, Double roamingCharges, Double discount, Double subtotal, Double gst, Double grandTotal, PaymentStatus paymentStatus) {
         this.invoiceId = invoiceId;
+        this.custId = custId;
         this.subscriptionId = subscriptionId;
         this.billingDate = billingDate;
         this.baseFare = baseFare;
@@ -41,6 +43,14 @@ public class Invoice {
 
     public void setInvoiceId(String invoiceId) {
         this.invoiceId = invoiceId;
+    }
+
+    public String getCustId() {
+        return custId;
+    }
+
+    public void setCustId(String custId) {
+        this.custId = custId;
     }
 
     public String getSubscriptionId() {
@@ -115,7 +125,7 @@ public class Invoice {
         this.grandTotal = grandTotal;
     }
 
-    public PaymentStatus isPaymentStatus() {
+    public PaymentStatus getPaymentStatus() {
         return paymentStatus;
     }
 

@@ -3,9 +3,10 @@ package com.tabs.models;
 import java.time.LocalDateTime;
 
 public class Subscription {
-    private String custID;
-    private String subscriptionID;
+    private String custId;
+    private String subscriptionId;
     private String planId;
+    private String phoneNumber;
     private boolean mnpStatus;
     private String familyId;
     private LocalDateTime subsStartDate;
@@ -14,30 +15,39 @@ public class Subscription {
     public Subscription() {
     }
 
-    public Subscription(String custID, String subscriptionID, String planId, boolean mnpStatus, String familyId, LocalDateTime subsStartDate, LocalDateTime subsEndDate) {
-        this.custID = custID;
-        this.subscriptionID = subscriptionID;
+    public Subscription(String custId, String subscriptionId, String planId, String phoneNumber, boolean mnpStatus, String familyId, LocalDateTime subsStartDate, LocalDateTime subsEndDate) {
+        this.custId = custId;
+        this.subscriptionId = subscriptionId;
         this.planId = planId;
+        this.phoneNumber = phoneNumber;
         this.mnpStatus = mnpStatus;
         this.familyId = familyId;
         this.subsStartDate = subsStartDate;
         this.subsEndDate = subsEndDate;
     }
 
-    public String getCustID() {
-        return custID;
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
-    public void setCustID(String custID) {
-        this.custID = custID;
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
-    public String getSubscriptionID() {
-        return subscriptionID;
+    public String getCustId() {
+        return custId;
     }
 
-    public void setSubscriptionID(String subscriptionID) {
-        this.subscriptionID = subscriptionID;
+    public void setCustId(String custId) {
+        this.custId = custId;
+    }
+
+    public String getSubscriptionId() {
+        return subscriptionId;
+    }
+
+    public void setSubscriptionId(String subscriptionID) {
+        this.subscriptionId = subscriptionID;
     }
 
     public boolean isMnpStatus() {
@@ -83,8 +93,8 @@ public class Subscription {
     @Override
     public String toString() {
         return "Subscription{" +
-                "custID='" + custID + '\'' +
-                ", subscriptionID='" + subscriptionID + '\'' +
+                "custId='" + custId + '\'' +
+                ", subscriptionID='" + subscriptionId + '\'' +
                 ", planId='" + planId + '\'' +
                 ", mnpStatus=" + mnpStatus +
                 ", familyId='" + familyId + '\'' +
