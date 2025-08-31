@@ -21,6 +21,26 @@ public class Invoice {
     private Double grandTotal;
     private PaymentStatus paymentStatus;
 
+    public Invoice() {
+    }
+
+    public Invoice(String invoiceId, String custId, String subscriptionId, String phoneNumber, LocalDate billingDate, Double baseFare, Double overageFare, Double roamingCharges, Double familyFairnessSurcharge, Double discount, Double subTotal, Double gst, Double grandTotal, PaymentStatus paymentStatus) {
+        this.invoiceId = invoiceId;
+        this.custId = custId;
+        this.subscriptionId = subscriptionId;
+        this.phoneNumber = phoneNumber;
+        this.billingDate = billingDate;
+        this.baseFare = 0.0;
+        this.overageFare = 0.0;
+        this.roamingCharges = 0.0;
+        this.familyFairnessSurcharge = 0.0;
+        this.discount = 0.0;
+        this.subTotal = 0.0;
+        this.gst = 0.0;
+        this.grandTotal = 0.0;
+        this.paymentStatus = PaymentStatus.PENDING;
+    }
+
     public String getInvoiceId() {
         return invoiceId;
     }

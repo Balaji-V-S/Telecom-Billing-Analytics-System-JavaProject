@@ -6,9 +6,6 @@ import java.util.DoubleSummaryStatistics;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Service interface for running analytical reports on billing data.
- */
 public interface AnalyticsService {
     List<Map.Entry<String, Double>> getTopNDataUsers(int n);
     double getSystemArpu();

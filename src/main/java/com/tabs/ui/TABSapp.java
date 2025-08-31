@@ -35,13 +35,11 @@ public class TABSapp {
     private static Customer loggedInCustomer = null;
     private static final String ADMIN_PASSWORD = "admin123";
 
-
     public static void main(String[] args) {
         try {
             seedData();
             System.out.println("\n=======================================================");
             System.out.println(" Welcome to the Telecom Billing & Analytics System");
-            System.out.println(" [Current Time: Sunday, August 31, 2025 at 8:20:05 PM IST]");
             System.out.println("=======================================================");
             showMainMenu();
         } catch (Exception e) {
@@ -59,7 +57,6 @@ public class TABSapp {
             System.out.println("4. Exit");
             System.out.print("Enter your choice: ");
             String choice = scanner.nextLine();
-
             switch (choice) {
                 case "1": showAdminLogin(); break;
                 case "2": loginUser(); break;
@@ -336,7 +333,6 @@ public class TABSapp {
         analyticsService.getPlanRecommendations().forEach((custName, recommendation) -> System.out.printf("For %s: %s\n", custName, recommendation));
     }
 
-    // --- USER METHODS ---
     // Shared logic for adding a subscription, used by admin and user
     private static void addSubscription(String custId) {
         System.out.print("Enter the new phone number: ");
@@ -457,6 +453,6 @@ public class TABSapp {
             usageService.addUsage(new Usage(s3.getSubscriptionId(), LocalDateTime.of(2025, 8, 20, 11, 0), 150.0, 100.0, 20, false, false));
         } catch(Exception e) { /* ignore in seed */ }
 
-        System.out.println("--- Initial data seeded for demonstration ---");
+        System.out.println("--- Initial data seeded for demo ---");
     }
 }
