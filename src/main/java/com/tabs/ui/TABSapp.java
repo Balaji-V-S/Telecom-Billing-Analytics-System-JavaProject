@@ -1,8 +1,23 @@
 package com.tabs.ui;
+
+import com.tabs.models.*;
+import com.tabs.services.*;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 public class TABSapp {
+
     private static final Scanner scanner = new Scanner(System.in);
+
+    // Services
+    private static final CustomerService customerService = new CustomerServiceImpl();
+    private static final SubscriptionService subscriptionService = new SubscriptionServiceImpl();
+    private static final BillingService billingService = new BillingServiceImpl();
+    private static final AnalyticsService analyticsService = new AnalyticsServiceImpl();
 
     public static void main(String[] args) {
         System.out.println("Welcome to the Telecom Customer Billing System!");
@@ -19,23 +34,17 @@ public class TABSapp {
             String choice = scanner.nextLine();
 
             switch (choice) {
-                case "1":
-                    showAdminMenu();
-                    break;
-                case "2":
-                    showUserMenu();
-                    break;
+                case "1": showAdminMenu(); break;
+                case "2": showUserMenu(); break;
                 case "3":
                     System.out.println("Exiting application. Goodbye!");
                     return;
-                default:
-                    System.out.println("Invalid choice. Please try again.");
+                default: System.out.println("Invalid choice. Please try again.");
             }
         }
     }
 
-
-    // ADMIN MENU
+    // ================= ADMIN MENU ==================
     private static void showAdminMenu() {
         while (true) {
             System.out.println("\n--- Admin Menu ---");
@@ -55,28 +64,26 @@ public class TABSapp {
             String choice = scanner.nextLine();
 
             switch (choice) {
-                case "1": System.out.println("[TODO] Add Customer"); break;
-                case "2": System.out.println("[TODO] View Customers"); break;
-                case "3": System.out.println("[TODO] Add Plans"); break;
-                case "4": System.out.println("[TODO] View All Subscriptions"); break;
-                case "5": System.out.println("[TODO] Assign Plans to Customers"); break;
-                case "6": System.out.println("[TODO] Add Usage"); break;
-                case "7": System.out.println("[TODO] View Usage"); break;
-                case "8": System.out.println("[TODO] Generate Invoices"); break;
-                case "9": System.out.println("[TODO] View Invoices"); break;
-                case "10": System.out.println("[TODO] Mark Invoice Paid"); break;
+                case "1": addCustomerUI(); break;
+                case "2": viewCustomersUI(); break;
+                case "3": System.out.println("[TODO] Add Plans"); break; // (not implemented yet)
+                case "4": viewSubscriptionsUI(); break;
+                case "5": addSubscriptionUI(); break;
+                case "6": addUsageUI(); break;
+                case "7": viewUsageUI(); break;
+                case "8": generateInvoiceUI(); break;
+                case "9": viewInvoicesUI(); break;
+                case "10": markInvoicePaidUI(); break;
                 case "11": showReportsMenu(); break;
                 case "12":
                     System.out.println("Logging out from Admin Menu...");
                     return;
-                default:
-                    System.out.println("Invalid choice.");
+                default: System.out.println("Invalid choice.");
             }
         }
     }
 
-
-    // REPORTS MENU (ADMIN)
+    // ================= REPORTS MENU ==================
     private static void showReportsMenu() {
         while (true) {
             System.out.println("\n--- Reports & Analytics ---");
@@ -90,10 +97,10 @@ public class TABSapp {
             String choice = scanner.nextLine();
 
             switch (choice) {
-                case "1": System.out.println("[TODO] Top N Data Users"); break;
-                case "2": System.out.println("[TODO] ARPU by Plan"); break;
-                case "3": System.out.println("[TODO] Overage Analysis"); break;
-                case "4": System.out.println("[TODO] Credit Risk Report"); break;
+                case "1": topNDataUsersUI(); break;
+                case "2": arpuByPlanUI(); break;
+                case "3": overageAnalysisUI(); break;
+                case "4": creditRiskReportUI(); break;
                 case "5": System.out.println("[TODO] Plan Recommendations"); break;
                 case "6": return;
                 default: System.out.println("Invalid choice.");
@@ -101,7 +108,7 @@ public class TABSapp {
         }
     }
 
-    // USER MENU
+    // ================= USER MENU ==================
     private static void showUserMenu() {
         while (true) {
             System.out.println("\n--- User Menu ---");
@@ -116,18 +123,188 @@ public class TABSapp {
             String choice = scanner.nextLine();
 
             switch (choice) {
-                case "1": System.out.println("[TODO] View Profile"); break;
-                case "2": System.out.println("[TODO] View Subscriptions"); break;
-                case "3": System.out.println("[TODO] Add Usage"); break;
-                case "4": System.out.println("[TODO] View Usage"); break;
-                case "5": System.out.println("[TODO] View Invoices"); break;
-                case "6": System.out.println("[TODO] Pay Invoice"); break;
+                case "1": viewCustomersUI(); break; // reuse
+                case "2": viewSubscriptionsUI(); break;
+                case "3": addUsageUI(); break;
+                case "4": viewUsageUI(); break;
+                case "5": viewInvoicesUI(); break;
+                case "6": markInvoicePaidUI(); break;
                 case "7":
                     System.out.println("Logging out from User Menu...");
                     return;
-                default:
-                    System.out.println("Invalid choice.");
+                default: System.out.println("Invalid choice.");
             }
         }
+    }
+
+    // ================= UI HELPERS ==================
+    private static void addCustomerUI() {
+        System.out.print("Enter Customer ID: ");
+        String custId = scanner.nextLine();
+        System.out.print("Enter Name: ");
+        String name = scanner.nextLine();
+        System.out.print("Enter Email: ");
+        String email = scanner.nextLine();
+
+        Customer customer = new Customer();
+        customer.setCustId(custId);
+        customer.setName(name);
+        customer.setEmail(email);
+
+        customerService.addCustomer(customer);
+        System.out.println("Customer added successfully!");
+    }
+
+    private static void viewCustomersUI() {
+        List<Customer> customers = customerService.getAllCustomers();
+        if (customers.isEmpty()) {
+            System.out.println("No customers found.");
+        } else {
+            customers.forEach(System.out::println);
+        }
+    }
+
+    private static void addSubscriptionUI() {
+        System.out.print("Enter Customer ID: ");
+        String custId = scanner.nextLine();
+        System.out.print("Enter Subscription ID: ");
+        String subId = scanner.nextLine();
+        System.out.print("Enter Plan ID: ");
+        String planId = scanner.nextLine();
+        System.out.print("Enter Phone Number: ");
+        String phone = scanner.nextLine();
+
+        Subscription subscription = new Subscription();
+        subscription.setCustId(custId);
+        subscription.setSubscriptionId(subId);
+        subscription.setPlanId(planId);
+        subscription.setPhoneNumber(phone);
+        subscription.setSubsStartDate(LocalDateTime.now());
+
+        subscriptionService.addSubscription(subscription);
+        System.out.println("Subscription assigned successfully!");
+    }
+
+    private static void viewSubscriptionsUI() {
+        List<Subscription> subs = subscriptionService.getAllSubscriptions();
+        if (subs.isEmpty()) {
+            System.out.println("No subscriptions found.");
+        } else {
+            subs.forEach(System.out::println);
+        }
+    }
+
+    private static void addUsageUI() {
+        System.out.print("Enter Subscription ID: ");
+        String subId = scanner.nextLine();
+
+        Usage usage = new Usage();
+        usage.setSubscriptionId(subId);
+        usage.setUsageStartTime(LocalDateTime.now());
+        System.out.print("Enter Data Used (GB): ");
+        usage.setDataUsedGB(Double.parseDouble(scanner.nextLine()));
+        System.out.print("Enter Voice Used (Mins): ");
+        usage.setVoiceUsedMins(Double.parseDouble(scanner.nextLine()));
+        System.out.print("Enter SMS Used: ");
+        usage.setSmsUsed(Integer.parseInt(scanner.nextLine()));
+
+        Customer subOwner = customerService.getAllCustomers().stream()
+                .filter(c -> subscriptionService.getSubscriptionsByCustomer(c.getCustId())
+                        .stream().anyMatch(s -> s.getSubscriptionId().equals(subId)))
+                .findFirst().orElse(null);
+
+        if (subOwner != null) {
+            String phone = subscriptionService.getSubscriptionById(subId).getPhoneNumber();
+            customerService.addUsage(subOwner.getCustId(), phone, usage);
+            System.out.println("Usage recorded successfully!");
+        } else {
+            System.out.println("Subscription not found!");
+        }
+    }
+
+    private static void viewUsageUI() {
+        System.out.print("Enter Customer ID: ");
+        String custId = scanner.nextLine();
+        System.out.print("Enter Phone Number: ");
+        String phone = scanner.nextLine();
+
+        List<Usage> usageList = customerService.getUsageByNumber(custId, phone);
+        if (usageList.isEmpty()) {
+            System.out.println("No usage found.");
+        } else {
+            usageList.forEach(System.out::println);
+        }
+    }
+
+    private static void generateInvoiceUI() {
+        System.out.print("Enter Invoice ID: ");
+        String invId = scanner.nextLine();
+        System.out.print("Enter Customer ID: ");
+        String custId = scanner.nextLine();
+        System.out.print("Enter Phone Number: ");
+        String phone = scanner.nextLine();
+
+        Invoice invoice = new Invoice();
+        invoice.setInvoiceId(invId);
+        invoice.setCustId(custId);
+        invoice.setPhoneNumber(phone);
+        invoice.setBillingDate(LocalDate.now());
+        invoice.setGrandTotal(100.0); // static for now
+        invoice.setPaymentStatus(Invoice.PaymentStatus.PENDING);
+
+        billingService.addInvoice(invoice);
+        customerService.addInvoice(custId, phone, invoice);
+        System.out.println("Invoice generated!");
+    }
+
+    private static void viewInvoicesUI() {
+        List<Invoice> invoices = billingService.getAllInvoices();
+        if (invoices.isEmpty()) {
+            System.out.println("No invoices found.");
+        } else {
+            invoices.forEach(System.out::println);
+        }
+    }
+
+    private static void markInvoicePaidUI() {
+        System.out.print("Enter Invoice ID: ");
+        String invId = scanner.nextLine();
+
+        Invoice invoice = billingService.getInvoiceById(invId);
+        if (invoice != null) {
+            invoice.setPaymentStatus(Invoice.PaymentStatus.PAID);
+            billingService.updateInvoice(invoice);
+            System.out.println("Invoice marked as PAID.");
+        } else {
+            System.out.println("Invoice not found!");
+        }
+    }
+
+    // ============== Reports UI ==============
+    private static void topNDataUsersUI() {
+        System.out.print("Enter N: ");
+        int n = Integer.parseInt(scanner.nextLine());
+
+        List<Usage> allUsage = customerService.getAllCustomers().stream()
+                .flatMap(c -> c.getUsageByNumber().values().stream().flatMap(List::stream))
+                .toList();
+
+        List<String> topUsers = analyticsService.getTopNDataUsers(allUsage, n);
+        System.out.println("Top " + n + " Data Users: " + topUsers);
+    }
+
+    private static void arpuByPlanUI() {
+        Map<String, Double> arpu = analyticsService.getArpuByPlan(billingService.getAllInvoices());
+        arpu.forEach((plan, value) -> System.out.println("Plan: " + plan + " | ARPU: " + value));
+    }
+
+    private static void overageAnalysisUI() {
+        Map<String, Double> overages = analyticsService.getOverageCharges(billingService.getAllInvoices());
+        overages.forEach((cust, value) -> System.out.println("Customer: " + cust + " | Overage: " + value));
+    }
+
+    private static void creditRiskReportUI() {
+        List<String> risky = analyticsService.getCreditRiskCustomers(billingService.getAllInvoices());
+        System.out.println("Customers at Credit Risk: " + risky);
     }
 }
