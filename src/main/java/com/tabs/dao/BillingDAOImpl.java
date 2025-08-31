@@ -5,7 +5,7 @@ import java.util.*;
 
 public class BillingDAOImpl implements BillingDAO {
 
-    private final Map<String, Invoice> invoices = new HashMap<>();
+    private Map<String, Invoice> invoices = new HashMap<>();
 
     @Override
     public void addInvoice(Invoice invoice) {

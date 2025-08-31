@@ -43,32 +43,32 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public List<Usage> getUsageByNumber(String customerId, String phoneNumber) {
-        return customerDAO.getUsageByNumber(customerId, phoneNumber);
+    public List<Usage> getUsageByNumber(String custId, String phoneNumber) {
+        return customerDAO.getUsageByNumber(custId, phoneNumber);
     }
 
     @Override
-    public void addInvoice(String customerId, String phoneNumber, Invoice invoice) {
-        customerDAO.addInvoice(customerId, phoneNumber, invoice);
+    public void addInvoice(String custId, String phoneNumber, Invoice invoice) {
+        customerDAO.addInvoice(custId, phoneNumber, invoice);
     }
 
     @Override
-    public List<Invoice> getInvoicesByNumber(String customerId, String phoneNumber) {
-        return customerDAO.getInvoicesByNumber(customerId, phoneNumber);
+    public List<Invoice> getInvoicesByNumber(String custId, String phoneNumber) {
+        return customerDAO.getInvoicesByNumber(custId, phoneNumber);
     }
 
     @Override
-    public boolean isCustomerCreditBlocked(String customerId) {
-        return customerDAO.isCustomerCreditBlocked(customerId);
+    public boolean isCustomerCreditBlocked(String custId) {
+        return customerDAO.isCustomerCreditBlocked(custId);
     }
 
     @Override
-    public void blockCustomer(String customerId) {
-        customerDAO.blockCustomer(customerId);
+    public void blockCustomer(String custId) {
+        customerDAO.blockCustomer(custId);
     }
 
     @Override
-    public void unblockCustomer(String customerId) {
-        customerDAO.unblockCustomer(customerId);
+    public void unblockCustomer(String custId) {
+        customerDAO.unblockCustomer(custId);
     }
 }
