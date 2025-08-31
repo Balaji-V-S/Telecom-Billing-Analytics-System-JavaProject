@@ -1,16 +1,28 @@
 package com.tabs.services;
 
+import com.tabs.dao.BillingDAO;
 import com.tabs.dao.CustomerDAO;
-import com.tabs.dao.CustomerDAOImpl;
+import com.tabs.dao.SubscriptionDAO;
+import com.tabs.exceptions.CustomerNotFoundException;
 import com.tabs.models.Customer;
 import com.tabs.models.Invoice;
-import com.tabs.models.Usage;
+import com.tabs.models.Subscription;
+import com.tabs.utility.PlanConfig;
 
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 public class CustomerServiceImpl implements CustomerService {
+    private final CustomerDAO customerDAO;
+    private final SubscriptionDAO subscriptionDAO;
+    private final BillingDAO billingDAO;
 
-    CustomerDAO customerDAO=new CustomerDAOImpl();
+    public CustomerServiceImpl(CustomerDAO customerDAO, SubscriptionDAO subscriptionDAO, BillingDAO billingDAO) {
+        this.customerDAO = customerDAO;
+        this.subscriptionDAO = subscriptionDAO;
+        this.billingDAO = billingDAO;
+    }
 
     @Override
     public void addCustomer(Customer customer) {
@@ -18,8 +30,12 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Customer getCustomerById(String custId) {
-        return customerDAO.getCustomerById(custId);
+    public Customer getCustomerById(String custId) throws CustomerNotFoundException{
+        Customer customer = customerDAO.getCustomerById(custId);
+        if (customer == null) {
+            throw new CustomerNotFoundException("Customer with ID '" + custId + "' not found.");
+        }
+        return customer;
     }
 
     @Override
@@ -33,42 +49,48 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public void deleteCustomer(String custId) {
+    public void deleteCustomer(String custId) throws CustomerNotFoundException {
+        Customer customerToDelete = getCustomerById(custId); // Uses the exception-throwing getter
+
+        // Step 1: Delete all associated subscriptions
+        List<Subscription> subscriptions = subscriptionDAO.getSubscriptionsByCustomer(custId);
+        for (Subscription sub : subscriptions) {
+            subscriptionDAO.deleteSubscription(sub.getSubscriptionId());
+        }
+        System.out.println("  - Deleted " + subscriptions.size() + " associated subscription(s).");
+
+        // Step 2: Nullify any referrals pointing to this customer
+        for (Customer otherCustomer : customerDAO.getAllCustomers()) {
+            if (custId.equals(otherCustomer.getReferredBy())) {
+                otherCustomer.setReferredBy(null);
+                customerDAO.updateCustomer(otherCustomer);
+                System.out.println("  - Cleared referral from customer: " + otherCustomer.getName());
+            }
+        }
+
+        // Step 3: Finally, delete the customer
         customerDAO.deleteCustomer(custId);
+        System.out.println("  - Successfully deleted customer: " + customerToDelete.getName());
     }
 
     @Override
-    public void addUsage(String custId, String phoneNumber, Usage usage) {
-        customerDAO.addUsage(custId, phoneNumber, usage);
-    }
+    public void runCreditControlCheck() {
+        System.out.println("Running credit control check for date: " + LocalDate.now());
+        for (Customer customer : customerDAO.getAllCustomers()) {
+            List<Invoice> invoices = billingDAO.getInvoicesByCustomer(customer.getCustId());
+            boolean hasOverdueInvoice = invoices.stream()
+                    .anyMatch(inv -> inv.getPaymentStatus() == Invoice.PaymentStatus.PENDING &&
+                            ChronoUnit.DAYS.between(inv.getBillingDate(), LocalDate.now()) > PlanConfig.CREDIT_CONTROL_DAYS_THRESHOLD);
 
-    @Override
-    public List<Usage> getUsageByNumber(String custId, String phoneNumber) {
-        return customerDAO.getUsageByNumber(custId, phoneNumber);
-    }
-
-    @Override
-    public void addInvoice(String custId, String phoneNumber, Invoice invoice) {
-        customerDAO.addInvoice(custId, phoneNumber, invoice);
-    }
-
-    @Override
-    public List<Invoice> getInvoicesByNumber(String custId, String phoneNumber) {
-        return customerDAO.getInvoicesByNumber(custId, phoneNumber);
-    }
-
-    @Override
-    public boolean isCustomerCreditBlocked(String custId) {
-        return customerDAO.isCustomerCreditBlocked(custId);
-    }
-
-    @Override
-    public void blockCustomer(String custId) {
-        customerDAO.blockCustomer(custId);
-    }
-
-    @Override
-    public void unblockCustomer(String custId) {
-        customerDAO.unblockCustomer(custId);
+            if (hasOverdueInvoice && !customer.isCreditBlocked()) {
+                customer.setCreditBlocked(true);
+                customerDAO.updateCustomer(customer);
+                System.out.println("  - Credit BLOCKED for customer: " + customer.getName() + " due to unpaid invoices.");
+            } else if (!hasOverdueInvoice && customer.isCreditBlocked()) {
+                customer.setCreditBlocked(false);
+                customerDAO.updateCustomer(customer);
+                System.out.println("  - Credit UNBLOCKED for customer: " + customer.getName() + " as all overdue invoices are cleared.");
+            }
+        }
     }
 }

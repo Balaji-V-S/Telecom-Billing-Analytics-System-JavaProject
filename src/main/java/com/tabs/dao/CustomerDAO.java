@@ -1,8 +1,6 @@
 package com.tabs.dao;
 
 import com.tabs.models.Customer;
-import com.tabs.models.Usage;
-import com.tabs.models.Invoice;
 import java.util.List;
 
 public interface CustomerDAO {
@@ -11,16 +9,4 @@ public interface CustomerDAO {
     List<Customer> getAllCustomers();
     void updateCustomer(Customer customer);
     void deleteCustomer(String custId);
-
-    // Usage & Invoice management
-    void addUsage(String custId, String phoneNumber, Usage usage);
-    List<Usage> getUsageByNumber(String custId, String phoneNumber);
-
-    void addInvoice(String custId, String phoneNumber, Invoice invoice);
-    List<Invoice> getInvoicesByNumber(String custId, String phoneNumber);
-
-    // Credit / Blocking
-    boolean isCustomerCreditBlocked(String customerId);
-    void blockCustomer(String customerId);
-    void unblockCustomer(String customerId);
 }

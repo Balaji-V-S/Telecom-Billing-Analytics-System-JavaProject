@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 public class Invoice {
 
-    public enum PaymentStatus {PENDING,PAID}
+    public enum PaymentStatus {PENDING, PAID}
 
     private String invoiceId;
     private String custId;
@@ -14,29 +14,12 @@ public class Invoice {
     private Double baseFare;
     private Double overageFare;
     private Double roamingCharges;
+    private Double familyFairnessSurcharge;
     private Double discount;
     private Double subTotal;
     private Double gst;
     private Double grandTotal;
     private PaymentStatus paymentStatus;
-
-    public Invoice() {
-    }
-
-    public Invoice(String invoiceId, String custId, String subscriptionId, String phoneNumber,LocalDate billingDate, Double baseFare, Double overageFare, Double roamingCharges, Double discount, Double subtotal, Double gst, Double grandTotal, PaymentStatus paymentStatus) {
-        this.invoiceId = invoiceId;
-        this.custId = custId;
-        this.subscriptionId = subscriptionId;
-        this.billingDate = billingDate;
-        this.baseFare = baseFare;
-        this.overageFare = overageFare;
-        this.roamingCharges = roamingCharges;
-        this.discount = discount;
-        this.subTotal = subtotal;
-        this.gst = gst;
-        this.grandTotal = grandTotal;
-        this.paymentStatus = paymentStatus;
-    }
 
     public String getInvoiceId() {
         return invoiceId;
@@ -102,6 +85,14 @@ public class Invoice {
         this.roamingCharges = roamingCharges;
     }
 
+    public Double getFamilyFairnessSurcharge() {
+        return familyFairnessSurcharge;
+    }
+
+    public void setFamilyFairnessSurcharge(Double familyFairnessSurcharge) {
+        this.familyFairnessSurcharge = familyFairnessSurcharge;
+    }
+
     public Double getDiscount() {
         return discount;
     }
@@ -142,7 +133,6 @@ public class Invoice {
         this.paymentStatus = paymentStatus;
     }
 
-
     @Override
     public String toString() {
         return "Invoice{" +
@@ -154,6 +144,7 @@ public class Invoice {
                 ", baseFare=" + baseFare +
                 ", overageFare=" + overageFare +
                 ", roamingCharges=" + roamingCharges +
+                ", familyFairnessSurcharge=" + familyFairnessSurcharge +
                 ", discount=" + discount +
                 ", subTotal=" + subTotal +
                 ", gst=" + gst +

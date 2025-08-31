@@ -1,21 +1,15 @@
 package com.tabs.services;
 
+import com.tabs.exceptions.CustomerNotFoundException;
+import com.tabs.exceptions.SubscriptionNotFoundException;
 import com.tabs.models.Subscription;
 import java.util.List;
 
+/**
+ * Service interface for managing subscription-related business logic.
+ */
 public interface SubscriptionService {
-
-    void addSubscription(String customerId, Subscription subscription);
-
-    Subscription getSubscriptionById(String subscriptionId);
-
-    List<Subscription> getSubscriptionsByCustomer(String customerId);
-
-    List<Subscription> getAllSubscriptions();
-
-    void updateSubscription(Subscription subscription);
-
-    void deleteSubscription(String subscriptionId);
-
-    Subscription getSubscriptionByPhoneNumber(String phoneNumber);
+    Subscription addSubscription(String customerId, String phoneNumber) throws CustomerNotFoundException;
+    void updateMnpStatus(String subscriptionId, boolean mnpStatus) throws SubscriptionNotFoundException;
+    // Add other lifecycle methods like changePlan, cancelSubscription if needed
 }

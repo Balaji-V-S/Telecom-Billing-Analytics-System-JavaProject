@@ -1,36 +1,28 @@
 package com.tabs.models;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class Customer {
     private String custId;
     private String name;
     private List<String> phoneNumbers = new ArrayList<>();
     private String email;
-    private String familyId;        // for family plan/grouping
-    private String referredBy;      // custId of the person who referred
-    private boolean isCreditBlocked;  // true if services are blocked due to non-payment
-    private Map<String, List<Usage>> usageByNumber = new HashMap<>();  ///session level usage records per phone number
-    private Map<String, List<Invoice>> invoicesByNumber = new HashMap<>();  // invoices per phone number
+    private String familyId;
+    private String referredBy;
+    private boolean isCreditBlocked;
 
     public Customer() {
     }
 
-    public Customer(String custId, String name, List<String> phoneNumbers, String email, String familyId, String referredBy, boolean creditBlocked, Map<String, List<Usage>> usageByNumber, Map<String, List<Invoice>> invoicesByNumber) {
+    public Customer(String custId, String name, String email) {
         this.custId = custId;
         this.name = name;
-        this.phoneNumbers = phoneNumbers;
         this.email = email;
-        this.familyId = familyId;
-        this.referredBy = referredBy;
-        this.isCreditBlocked = creditBlocked;
-        this.usageByNumber = usageByNumber;
-        this.invoicesByNumber = invoicesByNumber;
+        this.isCreditBlocked = false; // Customers are not blocked by default
     }
 
+    // --- Getters and Setters ---
     public String getCustId() {
         return custId;
     }
@@ -84,23 +76,7 @@ public class Customer {
     }
 
     public void setCreditBlocked(boolean creditBlocked) {
-        this.isCreditBlocked = creditBlocked;
-    }
-
-    public Map<String, List<Usage>> getUsageByNumber() {
-        return usageByNumber;
-    }
-
-    public void setUsageByNumber(Map<String, List<Usage>> usageByNumber) {
-        this.usageByNumber = usageByNumber;
-    }
-
-    public Map<String, List<Invoice>> getInvoicesByNumber() {
-        return invoicesByNumber;
-    }
-
-    public void setInvoicesByNumber(Map<String, List<Invoice>> invoicesByNumber) {
-        this.invoicesByNumber = invoicesByNumber;
+        isCreditBlocked = creditBlocked;
     }
 
     @Override
@@ -113,8 +89,6 @@ public class Customer {
                 ", familyId='" + familyId + '\'' +
                 ", referredBy='" + referredBy + '\'' +
                 ", isCreditBlocked=" + isCreditBlocked +
-                ", usageByNumber=" + usageByNumber +
-                ", invoicesByNumber=" + invoicesByNumber +
                 '}';
     }
 }

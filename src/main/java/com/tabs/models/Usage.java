@@ -10,12 +10,6 @@ public class Usage {
     private Integer smsUsed;
     private boolean isRoaming;
     private boolean isInternational;
-    //night time usage can be calculated from usageStartTime
-    //Weekend usage can be calculated from usageStartTime.getDayofWeek()
-
-
-    public Usage() {
-    }
 
     public Usage(String subscriptionId, LocalDateTime usageStartTime, Double dataUsedGB, Double voiceUsedMins, Integer smsUsed, boolean isRoaming, boolean isInternational) {
         this.subscriptionId = subscriptionId;

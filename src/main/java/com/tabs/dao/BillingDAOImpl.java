@@ -1,15 +1,22 @@
 package com.tabs.dao;
 
 import com.tabs.models.Invoice;
-import java.util.*;
+import java.time.YearMonth;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 public class BillingDAOImpl implements BillingDAO {
 
-    private Map<String, Invoice> invoices = new HashMap<>();
+    private Map<String, Invoice> invoices = new ConcurrentHashMap<>();
 
     @Override
     public void addInvoice(Invoice invoice) {
-        invoices.put(invoice.getInvoiceId(), invoice);
+        if (invoice != null && invoice.getInvoiceId() != null) {
+            invoices.put(invoice.getInvoiceId(), invoice);
+        }
     }
 
     @Override
@@ -19,24 +26,12 @@ public class BillingDAOImpl implements BillingDAO {
 
     @Override
     public List<Invoice> getInvoicesByCustomer(String custId) {
-        List<Invoice> result = new ArrayList<>();
-        for (Invoice inv : invoices.values()) {
-            if (inv.getCustId().equals(custId)) {
-                result.add(inv);
-            }
+        if (custId == null) {
+            return new ArrayList<>();
         }
-        return result;
-    }
-
-    @Override
-    public List<Invoice> getInvoicesByPhoneNumber(String phoneNumber) {
-        List<Invoice> result = new ArrayList<>();
-        for (Invoice inv : invoices.values()) {
-            if (inv.getPhoneNumber().equals(phoneNumber)) {
-                result.add(inv);
-            }
-        }
-        return result;
+        return invoices.values().stream()
+                .filter(inv -> custId.equals(inv.getCustId()))
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -46,11 +41,19 @@ public class BillingDAOImpl implements BillingDAO {
 
     @Override
     public void updateInvoice(Invoice invoice) {
-        invoices.put(invoice.getInvoiceId(), invoice);
+        if (invoice != null && invoice.getInvoiceId() != null) {
+            invoices.put(invoice.getInvoiceId(), invoice);
+        }
     }
 
     @Override
-    public void deleteInvoice(String invoiceId) {
-        invoices.remove(invoiceId);
+    public List<Invoice> getInvoicesBySubscriptionAndPeriod(String subscriptionId, YearMonth period) {
+        if (subscriptionId == null || period == null) {
+            return new ArrayList<>();
+        }
+        return invoices.values().stream()
+                .filter(inv -> subscriptionId.equals(inv.getSubscriptionId()) &&
+                        period.equals(YearMonth.from(inv.getBillingDate())))
+                .collect(Collectors.toList());
     }
 }

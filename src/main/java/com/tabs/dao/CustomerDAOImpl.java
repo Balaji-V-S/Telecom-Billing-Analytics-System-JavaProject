@@ -1,17 +1,20 @@
 package com.tabs.dao;
 
 import com.tabs.models.Customer;
-import com.tabs.models.Usage;
-import com.tabs.models.Invoice;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class CustomerDAOImpl implements CustomerDAO {
 
-    private Map<String, Customer> customers = new HashMap<>();
+    private Map<String, Customer> customers = new ConcurrentHashMap<>();
 
     @Override
     public void addCustomer(Customer customer) {
-        customers.put(customer.getCustId(), customer);
+        if (customer != null && customer.getCustId() != null) {
+            customers.put(customer.getCustId(), customer);
+        }
     }
 
     @Override
@@ -26,72 +29,13 @@ public class CustomerDAOImpl implements CustomerDAO {
 
     @Override
     public void updateCustomer(Customer customer) {
-        customers.put(customer.getCustId(), customer);
+        if (customer != null && customer.getCustId() != null) {
+            customers.put(customer.getCustId(), customer);
+        }
     }
 
     @Override
     public void deleteCustomer(String custId) {
         customers.remove(custId);
-    }
-
-    @Override
-    public void addUsage(String custId, String phoneNumber, Usage usage) {
-        Customer customer = customers.get(custId);
-        if (customer != null) {
-            customer.getUsageByNumber()
-                    .computeIfAbsent(phoneNumber, k -> new ArrayList<>())
-                    .add(usage);
-        }
-    }
-
-    @Override
-    public List<Usage> getUsageByNumber(String custId, String phoneNumber) {
-        Customer customer = customers.get(custId);
-        if (customer != null) {
-            return customer.getUsageByNumber().getOrDefault(phoneNumber, new ArrayList<>());
-        }
-        return new ArrayList<>();
-    }
-
-    @Override
-    public void addInvoice(String custId, String phoneNumber, Invoice invoice) {
-        Customer customer = customers.get(custId);
-        if (customer != null) {
-            customer.getInvoicesByNumber()
-                    .computeIfAbsent(phoneNumber, k -> new ArrayList<>())
-                    .add(invoice);
-        }
-    }
-
-    @Override
-    public List<Invoice> getInvoicesByNumber(String custId, String phoneNumber) {
-        Customer customer = customers.get(custId);
-        if (customer != null) {
-            return customer.getInvoicesByNumber().getOrDefault(phoneNumber, new ArrayList<>());
-        }
-        return new ArrayList<>();
-    }
-
-    // Credit ops
-    @Override
-    public boolean isCustomerCreditBlocked(String custId) {
-        Customer customer = customers.get(custId);
-        return customer != null && customer.isCreditBlocked();
-    }
-
-    @Override
-    public void blockCustomer(String customerId) {
-        Customer customer = customers.get(customerId);
-        if (customer != null) {
-            customer.setCreditBlocked(true);
-        }
-    }
-
-    @Override
-    public void unblockCustomer(String customerId) {
-        Customer customer = customers.get(customerId);
-        if (customer != null) {
-            customer.setCreditBlocked(false);
-        }
     }
 }

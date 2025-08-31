@@ -5,35 +5,14 @@ import java.time.LocalDateTime;
 public class Subscription {
     private String custId;
     private String subscriptionId;
-    private String planId;
     private String phoneNumber;
     private boolean mnpStatus;
     private String familyId;
     private LocalDateTime subsStartDate;
     private LocalDateTime subsEndDate;
+    private double dataRolloverBalanceGb = 0.0;
 
-    public Subscription() {
-    }
-
-    public Subscription(String custId, String subscriptionId, String planId, String phoneNumber, boolean mnpStatus, String familyId, LocalDateTime subsStartDate, LocalDateTime subsEndDate) {
-        this.custId = custId;
-        this.subscriptionId = subscriptionId;
-        this.planId = planId;
-        this.phoneNumber = phoneNumber;
-        this.mnpStatus = mnpStatus;
-        this.familyId = familyId;
-        this.subsStartDate = subsStartDate;
-        this.subsEndDate = subsEndDate;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
+    // --- Getters and Setters ---
     public String getCustId() {
         return custId;
     }
@@ -46,8 +25,16 @@ public class Subscription {
         return subscriptionId;
     }
 
-    public void setSubscriptionId(String subscriptionID) {
-        this.subscriptionId = subscriptionID;
+    public void setSubscriptionId(String subscriptionId) {
+        this.subscriptionId = subscriptionId;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public boolean isMnpStatus() {
@@ -82,24 +69,25 @@ public class Subscription {
         this.subsEndDate = subsEndDate;
     }
 
-    public String getPlanId() {
-        return planId;
+    public double getDataRolloverBalanceGb() {
+        return dataRolloverBalanceGb;
     }
 
-    public void setPlanId(String planId) {
-        this.planId = planId;
+    public void setDataRolloverBalanceGb(double dataRolloverBalanceGb) {
+        this.dataRolloverBalanceGb = dataRolloverBalanceGb;
     }
 
     @Override
     public String toString() {
         return "Subscription{" +
                 "custId='" + custId + '\'' +
-                ", subscriptionID='" + subscriptionId + '\'' +
-                ", planId='" + planId + '\'' +
+                ", subscriptionId='" + subscriptionId + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
                 ", mnpStatus=" + mnpStatus +
                 ", familyId='" + familyId + '\'' +
                 ", subsStartDate=" + subsStartDate +
                 ", subsEndDate=" + subsEndDate +
+                ", dataRolloverBalanceGb=" + dataRolloverBalanceGb +
                 '}';
     }
 }

@@ -1,15 +1,21 @@
 package com.tabs.dao;
 
 import com.tabs.models.Subscription;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 public class SubscriptionDAOImpl implements SubscriptionDAO {
 
-    private Map<String, Subscription> subscriptions = new HashMap<>();
+    private Map<String, Subscription> subscriptions = new ConcurrentHashMap<>();
 
     @Override
     public void addSubscription(Subscription subscription) {
-        subscriptions.put(subscription.getSubscriptionId(), subscription);
+        if (subscription != null && subscription.getSubscriptionId() != null) {
+            subscriptions.put(subscription.getSubscriptionId(), subscription);
+        }
     }
 
     @Override
@@ -19,13 +25,12 @@ public class SubscriptionDAOImpl implements SubscriptionDAO {
 
     @Override
     public List<Subscription> getSubscriptionsByCustomer(String custId) {
-        List<Subscription> result = new ArrayList<>();
-        for (Subscription sub : subscriptions.values()) {
-            if (sub.getCustId().equals(custId)) {
-                result.add(sub);
-            }
+        if (custId == null) {
+            return new ArrayList<>();
         }
-        return result;
+        return subscriptions.values().stream()
+                .filter(sub -> custId.equals(sub.getCustId()))
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -35,7 +40,9 @@ public class SubscriptionDAOImpl implements SubscriptionDAO {
 
     @Override
     public void updateSubscription(Subscription subscription) {
-        subscriptions.put(subscription.getSubscriptionId(), subscription);
+        if (subscription != null && subscription.getSubscriptionId() != null) {
+            subscriptions.put(subscription.getSubscriptionId(), subscription);
+        }
     }
 
     @Override
@@ -44,12 +51,12 @@ public class SubscriptionDAOImpl implements SubscriptionDAO {
     }
 
     @Override
-    public Subscription getSubscriptionByPhoneNumber(String phoneNumber) {
-        for (Subscription sub : subscriptions.values()) {
-            if (sub.getPhoneNumber().equals(phoneNumber)) {
-                return sub;
-            }
+    public List<Subscription> findByFamilyId(String familyId) {
+        if (familyId == null || familyId.isEmpty()) {
+            return new ArrayList<>();
         }
-        return null;
+        return subscriptions.values().stream()
+                .filter(sub -> familyId.equals(sub.getFamilyId()))
+                .collect(Collectors.toList());
     }
 }

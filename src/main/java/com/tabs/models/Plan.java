@@ -11,12 +11,9 @@ public class Plan {
     private Double voiceOverageRatePerMin;
     private Double smsOveragePerSMS;
     private Double weekendFreeMinutes;
-    private boolean familyShared;
+    private boolean isFamilyShared;
 
-    public Plan() {
-    }
-
-    public Plan(String planId, String planName, Double monthlyRental, Double dataAllowanceGB, Double voiceAllowedMins, Integer smsAllowed, Double dataOverageRatePerGB, Double voiceOverageRatePerMin, Double smsOveragePerSMS, Double weekendFreeMinutes, boolean familyShared) {
+    public Plan(String planId, String planName, Double monthlyRental, Double dataAllowanceGB, Double voiceAllowedMins, Integer smsAllowed, Double dataOverageRatePerGB, Double voiceOverageRatePerMin, Double smsOveragePerSMS, Double weekendFreeMinutes, boolean isFamilyShared) {
         this.planId = planId;
         this.planName = planName;
         this.monthlyRental = monthlyRental;
@@ -27,8 +24,9 @@ public class Plan {
         this.voiceOverageRatePerMin = voiceOverageRatePerMin;
         this.smsOveragePerSMS = smsOveragePerSMS;
         this.weekendFreeMinutes = weekendFreeMinutes;
-        this.familyShared = familyShared;
+        this.isFamilyShared = isFamilyShared;
     }
+
 
     public String getPlanId() {
         return planId;
@@ -111,11 +109,11 @@ public class Plan {
     }
 
     public boolean isFamilyShared() {
-        return familyShared;
+        return isFamilyShared;
     }
 
     public void setFamilyShared(boolean familyShared) {
-        this.familyShared = familyShared;
+        isFamilyShared = familyShared;
     }
 
     @Override
@@ -131,7 +129,7 @@ public class Plan {
                 ", voiceOverageRatePerMin=" + voiceOverageRatePerMin +
                 ", smsOveragePerSMS=" + smsOveragePerSMS +
                 ", weekendFreeMinutes=" + weekendFreeMinutes +
-                ", familyShared=" + familyShared +
+                ", isFamilyShared=" + isFamilyShared +
                 '}';
     }
 }

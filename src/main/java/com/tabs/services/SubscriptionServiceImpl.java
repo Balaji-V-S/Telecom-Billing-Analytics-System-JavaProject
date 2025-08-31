@@ -1,52 +1,52 @@
 package com.tabs.services;
 
+import com.tabs.dao.CustomerDAO;
 import com.tabs.dao.SubscriptionDAO;
-import com.tabs.dao.SubscriptionDAOImpl;
-import com.tabs.models.Plan;
+import com.tabs.exceptions.CustomerNotFoundException;
+import com.tabs.exceptions.SubscriptionNotFoundException;
+import com.tabs.models.Customer;
 import com.tabs.models.Subscription;
-
-import java.util.List;
+import java.time.LocalDateTime;
+import java.util.UUID;
 
 public class SubscriptionServiceImpl implements SubscriptionService {
 
-    private SubscriptionDAO subscriptionDAO = new SubscriptionDAOImpl();
+    private final SubscriptionDAO subscriptionDAO;
+    private final CustomerDAO customerDAO;
 
-    @Override
-    public void addSubscription(String customerId, Subscription subscription) {
-        // Attach default plan (singleton or pre-configured instance)
-        Plan defaultPlan = Plan.getDefaultPlan();
-        subscription.setPlan(defaultPlan);
-
-        subscriptionDAO.addSubscription(customerId, subscription);
+    public SubscriptionServiceImpl(SubscriptionDAO subscriptionDAO, CustomerDAO customerDAO) {
+        this.subscriptionDAO = subscriptionDAO;
+        this.customerDAO = customerDAO;
     }
 
     @Override
-    public Subscription getSubscriptionById(String subscriptionId) {
-        return subscriptionDAO.getSubscriptionById(subscriptionId);
+    public Subscription addSubscription(String customerId, String phoneNumber) throws CustomerNotFoundException{
+        Customer customer = customerDAO.getCustomerById(customerId);
+        if (customer == null) {
+            throw new CustomerNotFoundException("Cannot add subscription. Customer with ID '" + customerId + "' not found.");
+        }
+
+        Subscription sub = new Subscription();
+        sub.setSubscriptionId(UUID.randomUUID().toString().substring(0, 8));
+        sub.setCustId(customerId);
+        sub.setPhoneNumber(phoneNumber);
+        sub.setSubsStartDate(LocalDateTime.now());
+
+        subscriptionDAO.addSubscription(sub);
+        customer.getPhoneNumbers().add(phoneNumber);
+        customerDAO.updateCustomer(customer);
+
+        return sub;
     }
 
     @Override
-    public List<Subscription> getSubscriptionsByCustomer(String customerId) {
-        return subscriptionDAO.getSubscriptionsByCustomer(customerId);
-    }
-
-    @Override
-    public List<Subscription> getAllSubscriptions() {
-        return subscriptionDAO.getAllSubscriptions();
-    }
-
-    @Override
-    public void updateSubscription(Subscription subscription) {
-        subscriptionDAO.updateSubscription(subscription);
-    }
-
-    @Override
-    public void deleteSubscription(String subscriptionId) {
-        subscriptionDAO.deleteSubscription(subscriptionId);
-    }
-
-    @Override
-    public Subscription getSubscriptionByPhoneNumber(String phoneNumber) {
-        return subscriptionDAO.getSubscriptionByPhoneNumber(phoneNumber);
+    public void updateMnpStatus(String subscriptionId, boolean mnpStatus) throws SubscriptionNotFoundException {
+        Subscription sub = subscriptionDAO.getSubscriptionById(subscriptionId);
+        if (sub == null) {
+            throw new SubscriptionNotFoundException("Subscription with ID '" + subscriptionId + "' not found.");
+        }
+        sub.setMnpStatus(mnpStatus);
+        subscriptionDAO.updateSubscription(sub);
+        System.out.println("MNP status for subscription " + subscriptionId + " updated to: " + mnpStatus);
     }
 }
