@@ -19,9 +19,9 @@ public class TABSapp {
     private static final BillingService billingService = new BillingServiceImpl();
     private static final AnalyticsService analyticsService = new AnalyticsServiceImpl();
 
-    // Stub for plan fetching - implement PlanService or similar in real app
+    // Stub for plan fetching - implement PlanService or similar
     private static Plan getPlanById(String planId) {
-        // TODO: Replace this stub with actual PlanService lookup
+        // Replace this stub with actual PlanService lookup
         Plan p = new Plan();
         p.setPlanId(planId);
         p.setPlanName("Basic Plan");
@@ -302,7 +302,7 @@ public class TABSapp {
         invoice.setBillingDate(LocalDate.now());
         invoice.setBaseFare(baseFare);
         invoice.setOverageFare(overageFare);
-        invoice.setRoamingCharges(0.0); // add roaming logic if needed
+        invoice.setRoamingCharges(0.0); // add roaming logic
         invoice.setDiscount(0.0);
         invoice.setSubTotal(subTotal);
         invoice.setGst(gst);
