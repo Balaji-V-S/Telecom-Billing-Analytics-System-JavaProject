@@ -162,7 +162,6 @@ public class TABSapp {
         customer.setCustId(custId);
         customer.setName(name);
         customer.setEmail(email);
-
         customerService.addCustomer(customer);
         System.out.println("Customer added successfully!");
     }

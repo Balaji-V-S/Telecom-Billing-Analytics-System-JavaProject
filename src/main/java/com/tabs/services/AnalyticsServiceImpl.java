@@ -16,7 +16,7 @@ public class AnalyticsServiceImpl implements AnalyticsService {
         for (Usage u : allUsage) {
             dataUsageBySub.merge(u.getSubscriptionId(), u.getDataUsedGB(), Double::sum);
         }
-        // Sort and return top N subscriptionIds
+        // Sort and return top N subscriptionId
         return dataUsageBySub.entrySet().stream()
                 .sorted((a, b) -> Double.compare(b.getValue(), a.getValue()))
                 .limit(n)
