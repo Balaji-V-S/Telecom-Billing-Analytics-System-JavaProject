@@ -1,11 +1,4 @@
 package com.tabs.ui;
-
-import com.tabs.dao.*;
-import com.tabs.exceptions.*;
-import com.tabs.models.*;
-import com.tabs.services.*;
-import com.tabs.utility.PlanConfig;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
@@ -15,6 +8,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.UUID;
+
+import com.tabs.dao.*;
+import com.tabs.exceptions.*;
+import com.tabs.models.*;
+import com.tabs.services.*;
+import com.tabs.utility.PlanConfig;
 
 public class TABSapp {
     private static final Scanner scanner = new Scanner(System.in);
@@ -33,11 +32,11 @@ public class TABSapp {
 
     // --- Session & Security ---
     private static Customer loggedInCustomer = null;
-    private static final String ADMIN_PASSWORD = "admin123";
+    private static final String ADMIN_PASSWORD = "root@123";
 
     public static void main(String[] args) {
         try {
-            seedData();
+            InitializeUsers();
             System.out.println("\n=======================================================");
             System.out.println(" Welcome to the Telecom Billing & Analytics System");
             System.out.println("=======================================================");
@@ -416,7 +415,7 @@ public class TABSapp {
     }
 
     // --- SEED DATA ---
-    private static void seedData() throws CustomerNotFoundException {
+    private static void InitializeUsers() throws CustomerNotFoundException {
         // Customer 1: Normal user
         Customer c1 = new Customer("C001", "sathwik", "sathwik@mail.com");
         customerService.addCustomer(c1);

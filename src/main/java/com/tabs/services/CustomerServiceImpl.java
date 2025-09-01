@@ -14,9 +14,9 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 public class CustomerServiceImpl implements CustomerService {
-    private final CustomerDAO customerDAO;
-    private final SubscriptionDAO subscriptionDAO;
-    private final BillingDAO billingDAO;
+    private CustomerDAO customerDAO;
+    private SubscriptionDAO subscriptionDAO;
+    private BillingDAO billingDAO;
 
     public CustomerServiceImpl(CustomerDAO customerDAO, SubscriptionDAO subscriptionDAO, BillingDAO billingDAO) {
         this.customerDAO = customerDAO;

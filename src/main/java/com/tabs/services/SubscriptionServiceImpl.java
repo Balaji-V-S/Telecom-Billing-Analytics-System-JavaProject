@@ -11,8 +11,8 @@ import java.util.UUID;
 
 public class SubscriptionServiceImpl implements SubscriptionService {
 
-    private final SubscriptionDAO subscriptionDAO;
-    private final CustomerDAO customerDAO;
+    private SubscriptionDAO subscriptionDAO;
+    private CustomerDAO customerDAO;
 
     public SubscriptionServiceImpl(SubscriptionDAO subscriptionDAO, CustomerDAO customerDAO) {
         this.subscriptionDAO = subscriptionDAO;

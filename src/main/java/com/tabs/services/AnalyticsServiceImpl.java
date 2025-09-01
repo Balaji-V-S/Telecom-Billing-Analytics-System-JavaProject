@@ -16,10 +16,10 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class AnalyticsServiceImpl implements AnalyticsService {
-    private final UsageDAO usageDAO;
-    private final BillingDAO billingDAO;
-    private final SubscriptionDAO subscriptionDAO;
-    private final CustomerDAO customerDAO;
+    private UsageDAO usageDAO;
+    private BillingDAO billingDAO;
+    private SubscriptionDAO subscriptionDAO;
+    private CustomerDAO customerDAO;
 
     public AnalyticsServiceImpl(UsageDAO usageDAO, BillingDAO billingDAO, SubscriptionDAO subscriptionDAO, CustomerDAO customerDAO) {
         this.usageDAO = usageDAO;
@@ -38,7 +38,7 @@ public class AnalyticsServiceImpl implements AnalyticsService {
                 .entrySet().stream()
                 .sorted(Map.Entry.<String, Double>comparingByValue().reversed())
                 .limit(n)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override

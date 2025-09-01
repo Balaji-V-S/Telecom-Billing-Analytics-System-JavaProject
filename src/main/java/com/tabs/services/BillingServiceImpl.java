@@ -15,10 +15,10 @@ import java.time.YearMonth;
 import java.util.List;
 
 public class BillingServiceImpl implements BillingService {
-    private final UsageDAO usageDAO;
-    private final SubscriptionDAO subscriptionDAO;
-    private final CustomerDAO customerDAO;
-    private final BillingDAO billingDAO;
+    private UsageDAO usageDAO;
+    private SubscriptionDAO subscriptionDAO;
+    private CustomerDAO customerDAO;
+    private BillingDAO billingDAO;
 
     public BillingServiceImpl(UsageDAO usageDAO, SubscriptionDAO subscriptionDAO, CustomerDAO customerDAO, BillingDAO billingDAO) {
         this.usageDAO = usageDAO;

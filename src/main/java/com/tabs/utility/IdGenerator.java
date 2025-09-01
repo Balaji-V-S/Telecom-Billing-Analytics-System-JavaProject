@@ -10,6 +10,7 @@ public class IdGenerator {
     private static final Map<YearMonth, Integer> invoiceCounters = new ConcurrentHashMap<>();
     private static final DateTimeFormatter YM_FORMATTER = DateTimeFormatter.ofPattern("yyyyMM");
 
+    private IdGenerator(){}
     public static String generateInvoiceId() {
         YearMonth currentMonth = YearMonth.now();
         // Atomically increment the counter for the current month
