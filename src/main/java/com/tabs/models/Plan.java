@@ -27,6 +27,9 @@ public class Plan {
         this.isFamilyShared = isFamilyShared;
     }
 
+    public Plan() {
+    }
+
 
     public String getPlanId() {
         return planId;

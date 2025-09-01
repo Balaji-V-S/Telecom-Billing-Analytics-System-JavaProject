@@ -4,14 +4,38 @@ import com.tabs.models.Plan;
 
 public class PlanConfig {
     // single plan for all users, no complication
-    public static final Plan SYSTEM_PLAN = new Plan(
-            "UNIV-01", "Universal Plan 799", 799.0, 100.0, 5000.0,
-            100, 9.0, 0.9, 0.5, 500.0, true
-    );
-    public static final Plan SYSTEM_PLAN_LITE = new Plan(
-            "UNIV-02", "LITE Plan 599", 599.0, 50.0, 3000.0,
-            100, 9.0, 0.9, 0.5, 500.0, true
-    );
+    public static final Plan SYSTEM_PLAN;
+    public static final Plan SYSTEM_PLAN_LITE;
+
+    static {
+        SYSTEM_PLAN = new Plan();  // Non-parameterized constructor
+        SYSTEM_PLAN.setPlanId("UNIV-01");
+        SYSTEM_PLAN.setPlanName("Universal Plan 799");
+        SYSTEM_PLAN.setMonthlyRental(799.0);
+        SYSTEM_PLAN.setVoiceAllowedMins(100.0);
+        SYSTEM_PLAN.setDataAllowanceGB(5000.0);
+        SYSTEM_PLAN.setSmsAllowed(100);
+        SYSTEM_PLAN.setVoiceOverageRatePerMin(9.0);
+        SYSTEM_PLAN.setDataOverageRatePerGB(0.9);
+        SYSTEM_PLAN.setSmsOveragePerSMS(0.5);
+        SYSTEM_PLAN.setWeekendFreeMinutes(500.0);
+        SYSTEM_PLAN.setFamilyShared(true);
+    }
+
+    static {
+        SYSTEM_PLAN_LITE = new Plan();  // Non-parameterized constructor
+        SYSTEM_PLAN_LITE.setPlanId("LITE-01");
+        SYSTEM_PLAN_LITE.setPlanName("Lite Plan 599");
+        SYSTEM_PLAN_LITE.setMonthlyRental(599.0);
+        SYSTEM_PLAN_LITE.setVoiceAllowedMins(70.0);
+        SYSTEM_PLAN_LITE.setDataAllowanceGB(3000.0);
+        SYSTEM_PLAN_LITE.setSmsAllowed(50);
+        SYSTEM_PLAN_LITE.setVoiceOverageRatePerMin(9.0);
+        SYSTEM_PLAN_LITE.setDataOverageRatePerGB(0.9);
+        SYSTEM_PLAN_LITE.setSmsOveragePerSMS(0.5);
+        SYSTEM_PLAN_LITE.setWeekendFreeMinutes(500.0);
+        SYSTEM_PLAN_LITE.setFamilyShared(true);
+    }
 
 
     // Constants for invoicing and rates
