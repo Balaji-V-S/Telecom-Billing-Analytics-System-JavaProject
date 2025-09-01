@@ -438,7 +438,7 @@ public class TABSapp {
         // Customer 2: Overdue user for credit control test
         Customer c2 = new Customer("C002", "Rithvik", "Rithvik@mail.com","");
         customerService.addCustomer(c2);
-        Subscription s2 = subscriptionService.addSubscription("C002", "8765432109", 1,LocalDateTime.parse("2025-08-10T02:08:22"));
+        Subscription s2 = subscriptionService.addSubscription("C002", "8765432109", 1);
         try {
             usageService.addUsage(new Usage(s2.getSubscriptionId(), LocalDateTime.of(2025, 8, 15, 22, 0), 20.0, 500.0, 50, true, false));
         } catch(Exception e) { /* ignore in seed */ }

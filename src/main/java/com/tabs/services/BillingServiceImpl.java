@@ -45,13 +45,12 @@ public class BillingServiceImpl implements BillingService {
             if (sub == null) {
                 throw new SubscriptionNotFoundException("Subscription with ID '" + subscriptionId + "' not found.");
             }
-
+            Plan plan = PlanConfig.getPlanById(sub.getPlanId());
             if (sub.getSubsStartDate().toLocalDate().isAfter(billingPeriod.atEndOfMonth())) {
                 System.out.println("  INFO: Subscription " + subscriptionId + " was not active during " + billingPeriod + ". Skipping.");
                 return null;
             }
 
-            Plan plan = PlanConfig.SYSTEM_PLAN;
             Customer customer = customerDAO.getCustomerById(sub.getCustId());
             List<Usage> usageRecords = usageDAO.getUsageBySubscriptionIdAndPeriod(subscriptionId, billingPeriod);
 

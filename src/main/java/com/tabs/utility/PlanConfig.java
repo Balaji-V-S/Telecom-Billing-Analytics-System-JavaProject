@@ -2,6 +2,9 @@ package com.tabs.utility;
 
 import com.tabs.models.Plan;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class PlanConfig {
     // single plan for all users, no complication
     public static final Plan SYSTEM_PLAN;
@@ -35,6 +38,16 @@ public class PlanConfig {
         SYSTEM_PLAN_LITE.setSmsOveragePerSMS(0.5);
         SYSTEM_PLAN_LITE.setWeekendFreeMinutes(500.0);
         SYSTEM_PLAN_LITE.setFamilyShared(true);
+    }
+
+    private static final Map<String, Plan> PLANS_MAP = new HashMap<>();
+    static {
+        PLANS_MAP.put(SYSTEM_PLAN.getPlanId(), SYSTEM_PLAN);
+        PLANS_MAP.put(SYSTEM_PLAN_LITE.getPlanId(), SYSTEM_PLAN_LITE);
+    }
+
+    public static Plan getPlanById(String planId) {
+        return PLANS_MAP.get(planId);
     }
 
     // Constants for invoicing and rates
