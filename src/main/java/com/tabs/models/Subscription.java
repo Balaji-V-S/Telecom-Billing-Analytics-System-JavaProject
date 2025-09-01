@@ -11,6 +11,7 @@ public class Subscription {
     private LocalDateTime subsStartDate;
     private LocalDateTime subsEndDate;
     private double dataRolloverBalanceGb = 0.0;
+    private String planId;
 
     // --- Getters and Setters ---
     public String getCustId() {
@@ -75,6 +76,13 @@ public class Subscription {
 
     public void setDataRolloverBalanceGb(double dataRolloverBalanceGb) {
         this.dataRolloverBalanceGb = dataRolloverBalanceGb;
+    }
+    public String getPlanId() {
+        return planId;
+    }
+
+    public void setPlanId(String planId) {
+        this.planId = planId;
     }
 
     @Override

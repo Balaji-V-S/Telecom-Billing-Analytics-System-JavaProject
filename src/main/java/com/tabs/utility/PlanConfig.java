@@ -8,6 +8,11 @@ public class PlanConfig {
             "UNIV-01", "Universal Plan 799", 799.0, 100.0, 5000.0,
             100, 9.0, 0.9, 0.5, 500.0, true
     );
+    public static final Plan SYSTEM_PLAN_LITE = new Plan(
+            "UNIV-02", "LITE Plan 599", 599.0, 50.0, 3000.0,
+            100, 9.0, 0.9, 0.5, 500.0, true
+    );
+
 
     // Constants for invoicing and rates
     public static final double GST_RATE = 0.18;

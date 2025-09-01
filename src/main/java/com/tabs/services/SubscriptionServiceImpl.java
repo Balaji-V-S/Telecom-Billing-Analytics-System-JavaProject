@@ -5,9 +5,15 @@ import com.tabs.dao.SubscriptionDAO;
 import com.tabs.exceptions.CustomerNotFoundException;
 import com.tabs.exceptions.SubscriptionNotFoundException;
 import com.tabs.models.Customer;
+import com.tabs.models.Plan;
 import com.tabs.models.Subscription;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
+
+import static com.tabs.utility.PlanConfig.SYSTEM_PLAN;
+import static com.tabs.utility.PlanConfig.SYSTEM_PLAN_LITE;
 
 public class SubscriptionServiceImpl implements SubscriptionService {
 
@@ -20,7 +26,12 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     }
 
     @Override
-    public Subscription addSubscription(String customerId, String phoneNumber) throws CustomerNotFoundException{
+    public Subscription addSubscription(String customerId, String phoneNumber, int planNumber) throws CustomerNotFoundException{
+        List<Plan> plans = new ArrayList<Plan>();
+        plans.add(SYSTEM_PLAN);
+        plans.add(SYSTEM_PLAN_LITE);
+        Plan planToAdd = planNumber == 1 ? plans.get(0): plans.get(1);
+        String planName = planToAdd.getPlanName();
         Customer customer = customerDAO.getCustomerById(customerId);
         if (customer == null) {
             throw new CustomerNotFoundException("Cannot add subscription. Customer with ID '" + customerId + "' not found.");
@@ -31,12 +42,18 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         sub.setCustId(customerId);
         sub.setPhoneNumber(phoneNumber);
         sub.setSubsStartDate(LocalDateTime.now());
+        sub.setPlanId(planName);
 
         subscriptionDAO.addSubscription(sub);
         customer.getPhoneNumbers().add(phoneNumber);
         customerDAO.updateCustomer(customer);
 
         return sub;
+    }
+
+    @Override
+    public Subscription addSubscription(String customerId, String phoneNumber) throws CustomerNotFoundException {
+        return null;
     }
 
     @Override

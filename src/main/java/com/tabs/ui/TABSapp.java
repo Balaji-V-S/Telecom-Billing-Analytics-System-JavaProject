@@ -3,17 +3,16 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.time.format.DateTimeParseException;
-import java.util.DoubleSummaryStatistics;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
-import java.util.UUID;
+import java.util.*;
 
 import com.tabs.dao.*;
 import com.tabs.exceptions.*;
 import com.tabs.models.*;
 import com.tabs.services.*;
 import com.tabs.utility.PlanConfig;
+
+import static com.tabs.utility.PlanConfig.SYSTEM_PLAN;
+import static com.tabs.utility.PlanConfig.SYSTEM_PLAN_LITE;
 
 public class TABSapp {
     private static final Scanner scanner = new Scanner(System.in);
@@ -336,9 +335,18 @@ public class TABSapp {
     private static void addSubscription(String custId) {
         System.out.print("Enter the new phone number: ");
         String phone = scanner.nextLine();
+        System.out.println("Enter the plan you want:");
+        System.out.println("1.Normal Plan");
+        System.out.println("2.Lite Plan");
+        int planChoice = scanner.nextInt();
+        scanner.nextLine(); // <-- ADD THIS LINE TO CONSUME THE LEFTOVER NEWLINE
+        List<Plan> plans = new ArrayList<Plan>();
+        plans.add(SYSTEM_PLAN);
+        plans.add(SYSTEM_PLAN_LITE);
+        Plan planAdded = planChoice == 1 ? plans.get(0) : plans.get(1);
         try {
-            Subscription newSub = subscriptionService.addSubscription(custId, phone);
-            System.out.println("Successfully added subscription " + newSub.getSubscriptionId() + " for customer " + custId);
+            Subscription newSub = subscriptionService.addSubscription(custId, phone, planChoice);
+            System.out.println("Successfully added subscription " + newSub.getSubscriptionId() + " for customer " + custId + ", plan chose is " + planAdded.getPlanName());
         } catch (CustomerNotFoundException e) {
             System.err.println("ERROR: " + e.getMessage());
         }
@@ -406,7 +414,7 @@ public class TABSapp {
         }
     }
     private static void viewMySubscriptions(String custId) {
-        System.out.println("\n--- Your Subscriptions ---");
+        System.out.println("\n--- Your FSubscriptions ---");
         subscriptionDAO.getSubscriptionsByCustomer(custId).forEach(s -> System.out.printf("ID: %s, Phone: %s, Start Date: %s\n", s.getSubscriptionId(), s.getPhoneNumber(), s.getSubsStartDate().toLocalDate()));
     }
     private static void viewMyInvoices(String custId) {
@@ -427,7 +435,7 @@ public class TABSapp {
         // Customer 2: Overdue user for credit control test
         Customer c2 = new Customer("C002", "Rithvik", "Rithvik@mail.com");
         customerService.addCustomer(c2);
-        Subscription s2 = subscriptionService.addSubscription("C002", "8765432109");
+        Subscription s2 = subscriptionService.addSubscription("C002", "8765432109", 1);
         try {
             usageService.addUsage(new Usage(s2.getSubscriptionId(), LocalDateTime.of(2025, 8, 15, 22, 0), 20.0, 500.0, 50, true, false));
         } catch(Exception e) { /* ignore in seed */ }
@@ -444,7 +452,7 @@ public class TABSapp {
         Customer c3 = new Customer("C003", "RJD", "rjd@mail.com");
         c3.setFamilyId("FAM1");
         customerService.addCustomer(c3);
-        Subscription s3 = subscriptionService.addSubscription("C003", "7654321098");
+        Subscription s3 = subscriptionService.addSubscription("C003", "7654321098", 1);
         s3.setFamilyId("FAM1");
         subscriptionDAO.updateSubscription(s3);
         try {
