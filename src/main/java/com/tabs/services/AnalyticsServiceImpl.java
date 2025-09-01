@@ -65,17 +65,16 @@ public class AnalyticsServiceImpl implements AnalyticsService {
                         ChronoUnit.DAYS.between(inv.getBillingDate(), LocalDate.now()) > PlanConfig.CREDIT_CONTROL_DAYS_THRESHOLD)
                 .map(Invoice::getCustId)
                 .distinct()
-                .collect(Collectors.toList());
+                .toList();
 
         return riskyCustomerIds.stream()
                 .map(customerDAO::getCustomerById)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override
     public Map<String, String> getPlanRecommendations() {
-        // In a single-plan system, this recommends subscribing if not already a user, or suggests checking for family plan benefits.
-        // This is a simplified implementation for the single-plan context.
+        // In our single plan system, this recommends subscribing if not already a user, or suggests checking for family plan benefits.
         return customerDAO.getAllCustomers().stream()
                 .filter(c -> subscriptionDAO.getSubscriptionsByCustomer(c.getCustId()).isEmpty())
                 .collect(Collectors.toMap(

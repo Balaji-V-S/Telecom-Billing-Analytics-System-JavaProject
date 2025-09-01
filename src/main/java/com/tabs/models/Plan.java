@@ -13,21 +13,8 @@ public class Plan {
     private Double weekendFreeMinutes;
     private boolean isFamilyShared;
 
-    public Plan(String planId, String planName, Double monthlyRental, Double dataAllowanceGB, Double voiceAllowedMins, Integer smsAllowed, Double dataOverageRatePerGB, Double voiceOverageRatePerMin, Double smsOveragePerSMS, Double weekendFreeMinutes, boolean isFamilyShared) {
-        this.planId = planId;
-        this.planName = planName;
-        this.monthlyRental = monthlyRental;
-        this.dataAllowanceGB = dataAllowanceGB;
-        this.voiceAllowedMins = voiceAllowedMins;
-        this.smsAllowed = smsAllowed;
-        this.dataOverageRatePerGB = dataOverageRatePerGB;
-        this.voiceOverageRatePerMin = voiceOverageRatePerMin;
-        this.smsOveragePerSMS = smsOveragePerSMS;
-        this.weekendFreeMinutes = weekendFreeMinutes;
-        this.isFamilyShared = isFamilyShared;
-    }
-
     public Plan() {
+        this.isFamilyShared=false;
     }
 
 

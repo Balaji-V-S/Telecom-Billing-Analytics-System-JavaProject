@@ -37,7 +37,6 @@ public class PlanConfig {
         SYSTEM_PLAN_LITE.setFamilyShared(true);
     }
 
-
     // Constants for invoicing and rates
     public static final double GST_RATE = 0.18;
     public static final double REFERRAL_DISCOUNT_RATE = 0.05;
