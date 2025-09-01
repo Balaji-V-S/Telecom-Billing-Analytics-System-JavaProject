@@ -27,7 +27,7 @@ public class UsageDAOImpl implements UsageDAO {
     public List<Usage> getUsageBySubscriptionIdAndPeriod(String subscriptionId, YearMonth period) {
         return getUsageBySubscriptionId(subscriptionId).stream()
                 .filter(usage -> YearMonth.from(usage.getUsageStartTime()).equals(period))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override

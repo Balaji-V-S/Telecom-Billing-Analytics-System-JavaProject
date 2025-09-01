@@ -16,19 +16,19 @@ import com.tabs.services.*;
 import com.tabs.utility.PlanConfig;
 
 public class TABSapp {
-    private static final Scanner scanner = new Scanner(System.in);
+    private static Scanner scanner = new Scanner(System.in);
 
     // --- DAOs and Services are managed directly here ---
-    private static final CustomerDAO customerDAO = new CustomerDAOImpl();
-    private static final SubscriptionDAO subscriptionDAO = new SubscriptionDAOImpl();
-    private static final UsageDAO usageDAO = new UsageDAOImpl();
-    private static final BillingDAO billingDAO = new BillingDAOImpl();
+    private static CustomerDAO customerDAO = new CustomerDAOImpl();
+    private static SubscriptionDAO subscriptionDAO = new SubscriptionDAOImpl();
+    private static UsageDAO usageDAO = new UsageDAOImpl();
+    private static BillingDAO billingDAO = new BillingDAOImpl();
 
-    private static final CustomerService customerService = new CustomerServiceImpl(customerDAO, subscriptionDAO, billingDAO);
-    private static final SubscriptionService subscriptionService = new SubscriptionServiceImpl(subscriptionDAO, customerDAO);
-    private static final UsageService usageService = new UsageServiceImpl(usageDAO, subscriptionDAO, customerDAO);
-    private static final BillingService billingService = new BillingServiceImpl(usageDAO, subscriptionDAO, customerDAO, billingDAO);
-    private static final AnalyticsService analyticsService = new AnalyticsServiceImpl(usageDAO, billingDAO, subscriptionDAO, customerDAO);
+    private static CustomerService customerService = new CustomerServiceImpl(customerDAO, subscriptionDAO, billingDAO);
+    private static SubscriptionService subscriptionService = new SubscriptionServiceImpl(subscriptionDAO, customerDAO);
+    private static UsageService usageService = new UsageServiceImpl(usageDAO, subscriptionDAO, customerDAO);
+    private static BillingService billingService = new BillingServiceImpl(usageDAO, subscriptionDAO, customerDAO, billingDAO);
+    private static AnalyticsService analyticsService = new AnalyticsServiceImpl(usageDAO, billingDAO, subscriptionDAO, customerDAO);
 
     // --- Session & Security ---
     private static Customer loggedInCustomer = null;

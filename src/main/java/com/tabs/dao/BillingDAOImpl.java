@@ -31,7 +31,7 @@ public class BillingDAOImpl implements BillingDAO {
         }
         return invoices.values().stream()
                 .filter(inv -> custId.equals(inv.getCustId()))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override
@@ -54,6 +54,6 @@ public class BillingDAOImpl implements BillingDAO {
         return invoices.values().stream()
                 .filter(inv -> subscriptionId.equals(inv.getSubscriptionId()) &&
                         period.equals(YearMonth.from(inv.getBillingDate())))
-                .collect(Collectors.toList());
+                .toList();
     }
 }

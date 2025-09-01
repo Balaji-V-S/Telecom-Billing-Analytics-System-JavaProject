@@ -55,7 +55,9 @@ public class BillingServiceImpl implements BillingService {
             Customer customer = customerDAO.getCustomerById(sub.getCustId());
             List<Usage> usageRecords = usageDAO.getUsageBySubscriptionIdAndPeriod(subscriptionId, billingPeriod);
 
-            double totalDataUsed = 0, totalVoiceUsed = 0, roamingCharges = 0;
+            double totalDataUsed = 0;
+            double totalVoiceUsed = 0;
+            double roamingCharges = 0;
             int totalSmsUsed = 0;
 
             for (Usage usage : usageRecords) {
