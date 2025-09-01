@@ -7,6 +7,7 @@ import com.tabs.exceptions.SubscriptionNotFoundException;
 import com.tabs.models.Customer;
 import com.tabs.models.Plan;
 import com.tabs.models.Subscription;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +24,32 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     public SubscriptionServiceImpl(SubscriptionDAO subscriptionDAO, CustomerDAO customerDAO) {
         this.subscriptionDAO = subscriptionDAO;
         this.customerDAO = customerDAO;
+    }
+
+    @Override
+    public Subscription addSubscription(String customerId, String phoneNumber, int planNumber, LocalDateTime startDate) throws CustomerNotFoundException{
+        List<Plan> plans = new ArrayList<Plan>();
+        plans.add(SYSTEM_PLAN);
+        plans.add(SYSTEM_PLAN_LITE);
+        Plan planToAdd = planNumber == 1 ? plans.get(0): plans.get(1);
+        String planName = planToAdd.getPlanName();
+        Customer customer = customerDAO.getCustomerById(customerId);
+        if (customer == null) {
+            throw new CustomerNotFoundException("Cannot add subscription. Customer with ID '" + customerId + "' not found.");
+        }
+
+        Subscription sub = new Subscription();
+        sub.setSubscriptionId(UUID.randomUUID().toString().substring(0, 8));
+        sub.setCustId(customerId);
+        sub.setPhoneNumber(phoneNumber);
+        sub.setSubsStartDate(startDate);
+        sub.setPlanId(planName);
+
+        subscriptionDAO.addSubscription(sub);
+        customer.getPhoneNumbers().add(phoneNumber);
+        customerDAO.updateCustomer(customer);
+
+        return sub;
     }
 
     @Override

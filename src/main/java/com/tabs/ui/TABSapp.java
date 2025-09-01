@@ -430,7 +430,7 @@ public class TABSapp {
         // Customer 1: Normal user
         Customer c1 = new Customer("C001", "sathwik", "sathwik@mail.com","");
         customerService.addCustomer(c1);
-        Subscription s1 = subscriptionService.addSubscription("C001", "9876543210");
+        Subscription s1 = subscriptionService.addSubscription("C001", "9876543210",2, LocalDateTime.parse("2025-08-21T19:12:22"));
         try {
             usageService.addUsage(new Usage(s1.getSubscriptionId(), LocalDateTime.of(2025, 8, 10, 14, 0), 110.0, 50.0, 10, false, false)); // Overage
         } catch(Exception e) { /* ignore in seed */ }
@@ -438,7 +438,7 @@ public class TABSapp {
         // Customer 2: Overdue user for credit control test
         Customer c2 = new Customer("C002", "Rithvik", "Rithvik@mail.com","");
         customerService.addCustomer(c2);
-        Subscription s2 = subscriptionService.addSubscription("C002", "8765432109", 1);
+        Subscription s2 = subscriptionService.addSubscription("C002", "8765432109", 1,LocalDateTime.parse("2025-08-10T02:08:22"));
         try {
             usageService.addUsage(new Usage(s2.getSubscriptionId(), LocalDateTime.of(2025, 8, 15, 22, 0), 20.0, 500.0, 50, true, false));
         } catch(Exception e) { /* ignore in seed */ }
@@ -455,7 +455,7 @@ public class TABSapp {
         Customer c3 = new Customer("C003", "RJD", "rjd@mail.com","");
         c3.setFamilyId("FAM1");
         customerService.addCustomer(c3);
-        Subscription s3 = subscriptionService.addSubscription("C003", "7654321098", 1);
+        Subscription s3 = subscriptionService.addSubscription("C003", "7654321098", 1,LocalDateTime.parse("2025-08-01T12:10:22"));
         s3.setFamilyId("FAM1");
         subscriptionDAO.updateSubscription(s3);
         try {
