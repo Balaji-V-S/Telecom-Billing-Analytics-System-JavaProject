@@ -15,12 +15,22 @@ public class Customer {
     public Customer() {
     }
 
+    public Customer(String custId, String name, String email, String referredBy) {
+        this.custId = custId;
+        this.name = name;
+        this.email = email;
+        this.referredBy=referredBy;
+        this.isCreditBlocked = false; // Customers are not blocked by default
+    }
+
     public Customer(String custId, String name, String email) {
         this.custId = custId;
         this.name = name;
         this.email = email;
         this.isCreditBlocked = false; // Customers are not blocked by default
     }
+
+
 
     // --- Getters and Setters ---
     public String getCustId() {
