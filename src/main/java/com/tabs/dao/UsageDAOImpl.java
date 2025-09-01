@@ -9,7 +9,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 public class UsageDAOImpl implements UsageDAO {
-    private Map<String, List<Usage>> usageBySubscriptionId = new ConcurrentHashMap<>();
+    private static Map<String, List<Usage>> usageBySubscriptionId = new ConcurrentHashMap<>();
 
     @Override
     public void addUsage(Usage usage) {

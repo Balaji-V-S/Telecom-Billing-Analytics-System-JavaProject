@@ -426,7 +426,7 @@ public class TABSapp {
         } catch(Exception e) { /* ignore in seed */ }
 
         // Customer 2: Overdue user for credit control test
-        Customer c2 = new Customer("C002", "Suresh", "suresh@mail.com");
+        Customer c2 = new Customer("C002", "Rithvik", "Rithvik@mail.com");
         customerService.addCustomer(c2);
         Subscription s2 = subscriptionService.addSubscription("C002", "8765432109");
         try {
@@ -442,7 +442,7 @@ public class TABSapp {
         billingDAO.addInvoice(oldInvoice);
 
         // Customer 3: Family plan user
-        Customer c3 = new Customer("C003", "Ramesh", "ramesh@mail.com");
+        Customer c3 = new Customer("C003", "RJD", "rjd@mail.com");
         c3.setFamilyId("FAM1");
         customerService.addCustomer(c3);
         Subscription s3 = subscriptionService.addSubscription("C003", "7654321098");
@@ -451,6 +451,14 @@ public class TABSapp {
         try {
             // This user will use a huge amount of data to trigger the family surcharge
             usageService.addUsage(new Usage(s3.getSubscriptionId(), LocalDateTime.of(2025, 8, 20, 11, 0), 150.0, 100.0, 20, false, false));
+        } catch(Exception e) { /* ignore in seed */ }
+
+        // Customer 4: Normal user
+        Customer c4 = new Customer("C004", "ritesh", "ritesh@mail.com");
+        customerService.addCustomer(c4);
+        Subscription s4 = subscriptionService.addSubscription("C004", "9876543211");
+        try {
+            usageService.addUsage(new Usage(s4.getSubscriptionId(), LocalDateTime.of(2025, 8, 10, 14, 0), 210.0, 5030.0, 170, true, false)); // Overage
         } catch(Exception e) { /* ignore in seed */ }
 
         System.out.println("--- Initial data seeded for demo ---");

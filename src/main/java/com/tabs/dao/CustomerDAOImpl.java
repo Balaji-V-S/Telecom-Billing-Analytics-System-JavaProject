@@ -8,7 +8,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class CustomerDAOImpl implements CustomerDAO {
 
-    private Map<String, Customer> customers = new ConcurrentHashMap<>();
+    private static Map<String, Customer> customers = new ConcurrentHashMap<>();
 
     @Override
     public void addCustomer(Customer customer) {

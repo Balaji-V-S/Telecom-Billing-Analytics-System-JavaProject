@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 public class BillingDAOImpl implements BillingDAO {
 
-    private Map<String, Invoice> invoices = new ConcurrentHashMap<>();
+    private static Map<String, Invoice> invoices = new ConcurrentHashMap<>();
 
     @Override
     public void addInvoice(Invoice invoice) {

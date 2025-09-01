@@ -74,8 +74,7 @@ public class AnalyticsServiceImpl implements AnalyticsService {
 
     @Override
     public Map<String, String> getPlanRecommendations() {
-        // In a single-plan system, this recommends subscribing if not already a user,
-        // or suggests checking for family plan benefits.
+        // In a single-plan system, this recommends subscribing if not already a user, or suggests checking for family plan benefits.
         // This is a simplified implementation for the single-plan context.
         return customerDAO.getAllCustomers().stream()
                 .filter(c -> subscriptionDAO.getSubscriptionsByCustomer(c.getCustId()).isEmpty())

@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 
 public class SubscriptionDAOImpl implements SubscriptionDAO {
 
-    private Map<String, Subscription> subscriptions = new ConcurrentHashMap<>();
+    private static Map<String, Subscription> subscriptions = new ConcurrentHashMap<>();
 
     @Override
     public void addSubscription(Subscription subscription) {
