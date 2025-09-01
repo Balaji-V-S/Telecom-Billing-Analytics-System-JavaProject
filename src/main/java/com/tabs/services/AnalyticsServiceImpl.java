@@ -52,6 +52,9 @@ public class AnalyticsServiceImpl implements AnalyticsService {
     @Override
     public DoubleSummaryStatistics getOverageDistribution() {
         return billingDAO.getAllInvoices().stream()
+                // This filter adds extra safety, in case an invoice has a null fare
+                .filter(inv -> inv.getOverageFare() != null)
+                // This collector does all the work and handles the empty case automatically
                 .collect(Collectors.summarizingDouble(Invoice::getOverageFare));
     }
 
